@@ -47,7 +47,7 @@
         <div class="container mx-auto px-4 py-3 flex justify-between items-center">
             
             <a href="#" class="text-2xl font-extrabold tracking-tight flex items-center gap-3">
-                <img src="Archi bakery_20260118_145814_0000.png" alt="Logo Archi Bakery" class="h-10 w-auto object-contain hover:rotate-6 transition-transform duration-300">
+                <img src="bakery_20260118_145814_0000.png" alt="Logo Archi Bakery" class="h-10 w-auto object-contain hover:rotate-6 transition-transform duration-300">
                 
                 <span>Archi Bakery</span>
             </a>
@@ -212,41 +212,52 @@
 
     <script>
         window.addEventListener('DOMContentLoaded', () => {
-            // Ganti 'logo.png' kalau nama file maskot kamu beda
-            const mascotPath = 'logo.png'; 
+            // URL Gambar Maskot dari GitHub (Raw)
+            const mascotPath = 'https://raw.githubusercontent.com/bakeryarchi-dotcom/katalog/main/logo.png'; 
             
             const image = new Image();
-            image.src = mascotPath;
+            
+            // PENTING: Izin Cross-Origin agar gambar bisa dimanipulasi oleh script confetti
+            image.crossOrigin = "Anonymous";
 
+            // Event saat gambar berhasil diload
             image.onload = () => {
-                // Bikin bentuk confetti dari gambar maskot transparan
                 const mascotShape = confetti.shapeFromImage(image);
 
                 function randomInRange(min, max) {
                     return Math.random() * (max - min) + min;
                 }
 
-                // Fungsi looping untuk menembakkan confetti tipis-tipis
+                // Loop animasi confetti
                 (function frame() {
                     confetti({
-                        particleCount: 2, // Sangat tipis
-                        startVelocity: 5,
+                        particleCount: 2,  // Jumlah per tembakan (sedikit aja biar estetik)
+                        startVelocity: 10,
                         ticks: 400,
                         gravity: 0.2,
                         origin: {
                             x: Math.random(), 
-                            y: -0.1
+                            y: -0.1 // Jatuh dari atas layar
                         },
                         shapes: [mascotShape], 
                         colors: ['#F59E0B'],
-                        scalar: randomInRange(0.4, 0.7), 
+                        scalar: randomInRange(0.5, 0.8), // Ukuran maskot
                         drift: randomInRange(-0.5, 0.5),
                         disableForReducedMotion: true
                     });
 
+                    // Ulangi setiap 1-3 detik
                     setTimeout(frame, randomInRange(1000, 3000)); 
                 }());
             };
+
+            // Event kalau gambar gagal diload (bisa dicek di Inspect Element > Console)
+            image.onerror = () => {
+                console.error("Gagal memuat gambar maskot. Pastikan koneksi internet lancar & URL benar.");
+            };
+
+            // Set source gambar (harus terakhir)
+            image.src = mascotPath;
         });
     </script>
 
